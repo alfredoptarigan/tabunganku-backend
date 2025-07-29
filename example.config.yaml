@@ -1,0 +1,39 @@
+application:
+  #production, staging, local
+  environment: local
+  port: 9090
+database:
+  host: localhost
+  port: 5432
+  user: user
+  password: password
+  name: badumbadumbudumbudum
+  sslmode: disable
+  timezone: UTC
+  max_connections: 100
+  max_idle_connections: 10
+  conn_max_lifetime: 1
+redis:
+  host: 127.0.0.1
+  port: 6379
+  username: ""
+  password: ""
+  db: 0
+jwt:
+  secret: lupikirlukeren
+  access_expire: 3600
+  refresh_expire: 7800
+logging:
+  level: info
+  format: json
+  output: stdout
+  discord:
+    enable: false
+    url: "https://discord.com/api/webhooks/your-discord-webhook-url"
+    min_level: warn
+    channel_id: "your-channel-id"
+  slack:
+    enable: false
+    url: "https://hooks.slack.com/services/your-slack-webhook-url"
+    min_level: error
+aws_base_url: ""
