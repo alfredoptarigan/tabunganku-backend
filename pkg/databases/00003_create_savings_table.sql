@@ -9,6 +9,8 @@ CREATE TABLE savings(
     image VARCHAR(255) NOT NULL,
     filling_plan VARCHAR(7) NOT NULL CHECK (filling_plan IN ('Daily', 'Weekly', 'Monthly')),
     filling_nominal DECIMAL(10, 2) NOT NULL,
+    is_completed BOOLEAN DEFAULT FALSE,
+    completed_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,

@@ -22,6 +22,8 @@ type Saving struct {
 	Image          string         `gorm:"column:image;type:character varying(255);not null" json:"image"`
 	FillingPlan    string         `gorm:"column:filling_plan;type:character varying(7);not null;index:idx_savings_filling_plan,priority:1" json:"filling_plan"`
 	FillingNominal float64        `gorm:"column:filling_nominal;type:numeric(10,2);not null" json:"filling_nominal"`
+	IsCompleted    *bool          `gorm:"column:is_completed;type:boolean" json:"is_completed"`
+	CompletedAt    *time.Time     `gorm:"column:completed_at;type:timestamp with time zone" json:"completed_at"`
 	CreatedAt      *time.Time     `gorm:"column:created_at;type:timestamp with time zone;default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt      *time.Time     `gorm:"column:updated_at;type:timestamp with time zone;default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt      gorm.DeletedAt `gorm:"column:deleted_at;type:timestamp with time zone;index:idx_savings_deleted_at,priority:1" json:"deleted_at"`

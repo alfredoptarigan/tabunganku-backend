@@ -9,6 +9,14 @@ import (
 )
 
 func InitializeRouterV1(server *config.Application) {
+	server.App.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.JSON(fiber.Map{
+			"message": "Tabunganku API v1",
+			"version": "1.0.0",
+			"status":  "OK",
+			"contact": "alfredopatriciustarigan@outlook.com",
+		})
+	})
 	// Gunakan handler untuk path /swagger/* bukan middleware
 	server.App.Get("/swagger/*", swagger.HandlerDefault) // Opsi sederhana
 
