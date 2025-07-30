@@ -1,0 +1,158 @@
+basePath: /api/v1
+definitions:
+  dtos.ErrorResponseDTO:
+    properties:
+      code:
+        description: 'opsional: kode error internal'
+        type: integer
+      errors: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dtos.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dtos.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      email:
+        type: string
+      expires_in:
+        type: integer
+      name:
+        type: string
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+      user_uuid:
+        type: string
+    type: object
+  dtos.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+host: localhost:9090
+info:
+  contact:
+    email: your-email@example.com
+    name: API Support
+  description: API documentation for Tabunganku Backend
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Tabunganku
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with email and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            allOf:
+            - $ref: '#/definitions/dtos.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dtos.LoginResponse'
+              type: object
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+      summary: User Login
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Register a new user with form data including optional image upload
+      parameters:
+      - description: User's full name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: User's email address
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: User's password (minimum 6 characters)
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Password confirmation (must match password)
+        in: formData
+        name: confirmation_password
+        required: true
+        type: string
+      - description: User's phone number
+        in: formData
+        name: phone_number
+        required: true
+        type: string
+      - description: User's profile image (optional)
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+      summary: User Registration
+      tags:
+      - Authentication
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

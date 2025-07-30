@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/gofiber/fiber/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	fiberCors "github.com/gofiber/fiber/v2/middleware/cors"
@@ -10,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"alfredo/tabunganku/pkg/log"
+	"alfredo/tabunganku/pkg/middleware"
 )
 
 type Application struct {
