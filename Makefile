@@ -3,7 +3,7 @@
 # Generate specific tables
 generate-models:
 	@echo "Generating specific models..."
-	@gentool -dsn "host=localhost user=alfredopatriciustarigan password=test dbname=tabanganku port=5432 sslmode=disable TimeZone=UTC" \
+	@gentool -dsn "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable TimeZone=UTC" \
 		-db postgres \
 		-tables "users" \
 		-outPath "./pkg/models" \
@@ -111,3 +111,49 @@ setup-test:
 	@echo "Setting up test environment..."
 	cp example.config.yaml config.yaml
 	@echo "Test environment setup complete"
+
+# Goose migration commands
+migrate-up:
+	@echo "Running migrations up..."
+	goose -dir pkg/databases postgres "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable" up
+
+migrate-down:
+	@echo "Rolling back last migration..."
+	goose -dir pkg/databases postgres "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable" down
+
+migrate-status:
+	@echo "Checking migration status..."
+	goose -dir pkg/databases postgres "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable" status
+
+migrate-reset:
+	@echo "Resetting all migrations..."
+	goose -dir pkg/databases postgres "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable" reset
+
+migrate-create:
+	@echo "Creating new migration file..."
+	@read -p "Enter migration name: " name; \
+	goose -dir pkg/databases create $$name sql
+
+# Create new seeder file
+create-seeder:
+	@echo "Creating new seeder file..."
+	@read -p "Enter seeder name: " name; \
+	touch pkg/databases/seeders/$${name}_seed.sql
+
+# Seeding commands
+seed-currencies:
+	@echo "Seeding currencies data..."
+	psql "host=localhost user=alfredopatriciustarigan password=test dbname=tabunganku port=5432 sslmode=disable" -f pkg/databases/seeders/currencies_seed.sql
+
+seed-all:
+	@echo "Seeding all data..."
+	@make seed-currencies
+
+# Verify seeded data - usage: make verify-seed TABLE=currencies
+verify-seed:
+	@if [ -z "$(TABLE)" ]; then \
+		echo "Error: TABLE parameter is required. Usage: make verify-seed TABLE=table_name"; \
+		exit 1; \
+	fi
+	@echo "Verifying data in table: $(TABLE)"
+	psql "tabunganku" -c "SELECT * FROM $(TABLE) LIMIT 3;"
