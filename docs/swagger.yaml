@@ -149,6 +149,99 @@ paths:
       summary: User Registration
       tags:
       - Authentication
+  /savings:
+    get:
+      consumes:
+      - application/json
+      description: Get all savings records for the authenticated user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+      summary: Get user savings
+      tags:
+      - savings
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new saving record with optional image upload
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Saving name
+        in: formData
+        maxLength: 50
+        minLength: 3
+        name: name
+        required: true
+        type: string
+      - description: Target amount
+        in: formData
+        minimum: 0.01
+        name: target_amount
+        required: true
+        type: number
+      - description: Currency code (3 characters)
+        in: formData
+        maxLength: 3
+        minLength: 3
+        name: currency_code
+        required: true
+        type: string
+      - description: Filling plan
+        enum:
+        - Daily
+        - Weekly
+        - Monthly
+        in: formData
+        name: filling_plan
+        required: true
+        type: string
+      - description: Filling nominal amount
+        in: formData
+        minimum: 0.01
+        name: filling_nominal
+        required: true
+        type: number
+      - description: Image file
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponseDTO'
+      summary: Create a new saving
+      tags:
+      - savings
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" followed by a space and JWT token.

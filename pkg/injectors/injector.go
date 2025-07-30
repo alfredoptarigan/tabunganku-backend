@@ -49,3 +49,15 @@ func InitializeUserController() controllers.UserController {
 
 	return nil
 }
+
+func InitializeSavingController() controllers.SavingController {
+	wire.Build(
+		authSet,
+		services.NewJwtService,
+		services.NewSavingService,
+		repositories.NewSavingRepository,
+		controllers.NewSavingController,
+	)
+
+	return nil
+}

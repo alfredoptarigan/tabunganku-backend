@@ -35,6 +35,20 @@ func InitializeUserController() controllers.UserController {
 	return userController
 }
 
+func InitializeSavingController() controllers.SavingController {
+	db := config.InitDatabasePostgres()
+	savingRepository := repositories.NewSavingRepository(db)
+	savingService := services.NewSavingService(savingRepository)
+	client := config.InitRedis()
+	redisRepository := repositories.NewRedisRepository(client)
+	redisService := services.NewRedisService(redisRepository)
+	userRepository := repositories.NewUserRepository(db)
+	jwtService := services.NewJwtService(redisService)
+	userService := services.NewUserService(userRepository, jwtService)
+	savingController := controllers.NewSavingController(savingService, redisService, userService)
+	return savingController
+}
+
 // injector.go:
 
 var initDBPostgresSet = wire.NewSet(config.InitDatabasePostgres)

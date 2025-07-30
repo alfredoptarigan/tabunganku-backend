@@ -44,6 +44,12 @@ func InitializeRouterV1(server *config.Application) {
 				authController.Router(auth)
 			}
 
+			saving := v1.Group("/savings")
+			{
+				savingController := injectors.InitializeSavingController()
+				savingController.Router(saving)
+			}
+
 		}
 
 	}

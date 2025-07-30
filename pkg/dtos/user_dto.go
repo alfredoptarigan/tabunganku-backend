@@ -8,3 +8,11 @@ type RegisterRequest struct {
 	PhoneNumber          string `form:"phone_number" json:"phone_number" validate:"required"`
 	Image                string `form:"photo_url" json:"photo_url" validate:"omitempty"`
 }
+
+type UserResponse struct {
+	UUID        string `json:"uuid"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
+	Image       string `json:"image"`
+}
